@@ -16,4 +16,22 @@ from astropy.io import fits
 gbt_dir='/lustre/pipeline/scratch/vsokolov'
 
 # run the pipeline
-gbtpipeline --clobber -u tmb --window 2 -m "70:81,84:86" -f 0,1,3,4,5,6 -i /home/scratch/vsokolov/AGBT15B_313_03.raw.vegas
+#gbtpipeline --clobber -u tmb --window 2 -m "70:81,84:86" -f 0,1,3,4,5,6 -i /home/scratch/vsokolov/AGBT15B_313_03.raw.vegas
+
+Gains = '1,1,1,1,1,1,1,1,1,1,1,1,1,1'
+window=['0','1','2','3','4','5','6']
+window=['0'] # Only NHc(1,1) to test the system
+Region='cloudA'
+
+for thisWindow in window:
+	GAS_gridregion.doPipeline(SessionNumber=3, StartScan=70, EndScan=81, Source='EG28.67', 
+		Gains=Gains, Region=Region, Window=str(thisWindow), overwrite=True)
+
+
+startChannel = 1024 + 668 # default 1024
+endChannel = 1024 + 1452  # default 3072
+file_extension='_test'
+GAS_gridregion.griddata( rootdir=data_dir, region=region_name, 
+        dirname=region_name+'_NH3_11', 
+        startChannel = startChannel, endChannel = endChannel, 
+        file_extension=file_extension)
