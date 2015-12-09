@@ -1,5 +1,6 @@
 import numpy as np
 import glob
+import os
 from astropy.io import fits
 import astropy.wcs as wcs
 import itertools
