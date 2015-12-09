@@ -1,0 +1,16 @@
+#!/bin/bash
+# TODO: figure out how to include window 3 and fdnum=2
+# TODO: image other windows
+# TODO: get the scaling factors: --beam-scaling BEAMSCALING
+# TODO: find out why aplpy doesn't like coordinate 
+#       system that gbtpipeline produces
+
+# Daisy scan numbers:
+# 87:99 | from 313-04; did pointing corrections on 1751+0939, and nodding on 3C84 (scans 114:121);
+# 2015/12/09 vsokolov: scan 99 is empty and crashes the pipeline - that must be when I hit abort in Astrid
+
+# clear the AIPS catalogue to solve the annoying bug causeing the pipeline to crash:
+aipspy /home/gbtpipeline/release/tools/clear_AIPS_catalog.py `id -u`
+
+# run the pipeline
+gbtpipeline --clobber -u tmb --window 2 -m "87:98" -f 0,1,3,4,5,6 -i /home/scratch/vsokolov/AGBT15B_313_04.raw.vegas
