@@ -35,7 +35,7 @@ keys['B'] = {
 	}
 
 keys['E'] = {
-	'session': 03,
+	'session': 04,
 	'source' : 'EG28.67',
 	'region' : 'cloudE',
 	'windows': ['0','1','2','3','4','5','6'],
@@ -45,7 +45,7 @@ keys['E'] = {
 	}
 
 keys['I'] = {
-	'session': 03,
+	'session': 02,
 	'source' : 'IG38.35',
 	'region' : 'cloudI',
 	'windows': ['0','1','2','3','4','5','6'],
@@ -56,7 +56,7 @@ keys['I'] = {
 	}
 
 keys['J'] = {
-	'session': 03,
+	'session': 04,
 	'source' : 'JG53.11',
 	'region' : 'cloudJ',
 	'windows': ['0','1','2','3','4','5','6'],
