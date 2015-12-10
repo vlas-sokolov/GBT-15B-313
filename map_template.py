@@ -1,11 +1,17 @@
 #!/usr/bin/env python
-#import os
+#
+# A master script for reducing GBT data. Intended to be run 
+# from command line, but importing the file would load the
+# "map_cloud" routine, which could be used directly. If an
+# execfile is called it, some sensible defaults are assumed.
+#
+# Example uses:
+# - recalibrate cloud A data:
+#   $ ./map_template.py --calib --source A
+# - do imaging only on clouds  A, J, and J:
+#   $ python map_template.py --source J A B
+#
 from cloud_keys import keys
-
-# TODO: this doesn't seem to work!
-# if importing problems occur, uncomment this:
-#anaconda='/lustre/pipeline/scratch/GAS/python/anaconda/bin'
-#os.environ["PATH"] += os.pathsep + anaconda
 
 data_dir='/lustre/pipeline/scratch/vsokolov/GBT-15B-313/'
 
@@ -36,13 +42,12 @@ def main():
 		print 'from the command line'
 		args.source = ['A','B','E','I','J']
 
-	print args
 	for cloud in args.source:
-		map_cloud(cloud=cloud, do_calibraion=args.do_calubration,
+		map_cloud(cloud=cloud, do_calibraion=args.do_calibration,
 		          do_sdfits=args.do_sdfits, 
 		          do_imaging=not args.no_imaging)
 
-def map_cloud(cloud, do_sdfits, do_calibration, do_imaging, keys=keys):
+def map_cloud(cloud, do_sdfits=False, do_calibration=False, do_imaging=True, keys=keys):
 	session = keys[cloud]['session'] 
 	source  = keys[cloud]['source' ] 
 	region  = keys[cloud]['region' ] 
