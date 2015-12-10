@@ -2,6 +2,10 @@
 # - default parameters for the pipeline
 # - variables specific to individual clouds
 
+# The default gains should be 1's
+# the gains derived from GAS on semester 15B are below, and they 
+# provide a good intrabeam calibration; however, there could be 
+# a small global correction to get the amplitude calibration right.
 gains_unity = '1,1,1,1,1,1,1,1,1,1,1,1,1,1'
 gains_GAS   = '0.883,0.858,0.885,0.847,0.847,0.855,0.746,0.731,0.986,0.768,0.647,0.522,0.894,1.109'
 
