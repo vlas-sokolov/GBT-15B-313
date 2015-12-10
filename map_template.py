@@ -9,10 +9,6 @@ from cloud_keys import keys
 
 data_dir='/lustre/pipeline/scratch/vsokolov/GBT-15B-313/'
 
-# TODO: main() can't be called with execfile now,
-#       better to run in as import map_template!
-#       I'll think of a sensible default args to
-#       be passed to argparse in the meanwhile;
 def main():
 	# Setting up the command line interaction
 	import argparse
