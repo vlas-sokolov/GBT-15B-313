@@ -265,13 +265,20 @@ def doPipeline(SessionNumber=1,StartScan = 11, EndScan=58,
     SessionDir = 'AGBT15B_313_'+str(SessionNumber).zfill(2)+'.raw.vegas/'
     BankNames = ['A','B','C','D','E','F','G','H']
     print('Reducing '+SessionDir)
-    WindowDict = {'0':'NH3_11',
-                  '1':'HC7N_21_20',
-                  '2':'C2S',
-                  '3':'NH3_22',
-                  '4':'NH3_33',
-                  '5':'HC5N',
-                  '6':'HC7N_22_21'}
+    WindowDict = {'0':'NH3_44',
+		  '1':'NH3_44',
+                  '2':'NH3_11',
+                  '3':'NH3_11',
+                  '4':'NH3_22',
+                  '5':'NH3_22',
+                  '6':'NH3_33',
+                  '7':'NH3_33',
+                  '8':'NH3_55',
+                  '9':'NH3_55',
+                  '10':'HC7N',
+                  '11':'HC7N',
+                  '12':'HC5N',
+                  '13':'HC5N'}
     
     # Set default pipeline options as a dictionary
     if OptionDict is None:
