@@ -7,9 +7,9 @@
 #
 # Example uses:
 # - recalibrate cloud A data:
-#   $ ./map_template.py --calib --source A
+#   $ ./reduce.py --calib --source A
 # - do imaging only on clouds  A, J, and J:
-#   $ python map_template.py --source J A B
+#   $ python reduce.py --source J A B
 #
 from cloud_keys import keys
 
@@ -34,7 +34,7 @@ def main():
 	
 	args = parser.parse_args()
 	# so this is a bit ugly, but it still allows to
-	# exectute the main() block through execfile(map_template.py)
+	# exectute the main() block through execfile(reduce.py)
 	if args.source is None:
 		print parser.format_usage()
 		print 'assuming sources A, B, E, I, J'
@@ -86,7 +86,7 @@ def map_cloud(cloud, do_sdfits=False, do_calibration=False, do_imaging=True, key
 				   Gains         = gains, 
 				   Region        = region, 
 				   Window        = str(window), 
-				   OutputRoot    = data_dir+region,
+				   OutputRoot    = data_dir+region+'/',
 				   overwrite     = True                   )
 	
 	# Image the calibrated data
