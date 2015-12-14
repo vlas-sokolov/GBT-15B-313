@@ -250,7 +250,6 @@ def griddata(pixPerBeam = 3.0,
     hdu2 = fits.PrimaryHDU(outWts,header=hdr2)
     hdu2.writeto(dirname+file_extension+'_wts.fits',clobber=True)
 
-
 def doPipeline(SessionNumber=1,StartScan = 11, EndScan=58, 
                Source='EG28.67', Window='0', 
                Region = 'NGC1333', OptionDict = None,
@@ -265,21 +264,7 @@ def doPipeline(SessionNumber=1,StartScan = 11, EndScan=58,
     SessionDir = 'AGBT15B_313_'+str(SessionNumber).zfill(2)+'.raw.vegas/'
     BankNames = ['A','B','C','D','E','F','G','H']
     print('Reducing '+SessionDir)
-    WindowDict = {'0':'NH3_44',
-		  '1':'NH3_44',
-                  '2':'NH3_11',
-                  '3':'NH3_11',
-                  '4':'NH3_22',
-                  '5':'NH3_22',
-                  '6':'NH3_33',
-                  '7':'NH3_33',
-                  '8':'NH3_55',
-                  '9':'NH3_55',
-                  '10':'HC7N',
-                  '11':'HC7N',
-                  '12':'HC5N',
-                  '13':'HC5N'}
-    
+    from cloud_keys import WindowDict
     # Set default pipeline options as a dictionary
     if OptionDict is None:
         OptionDict = {'--window':Window,
@@ -335,7 +320,6 @@ def doPipeline(SessionNumber=1,StartScan = 11, EndScan=58,
                     try:
                         os.rename(indexname,OutputDirectory+'/'+outindexname)
                     except:
-			print "We can not move, we cannot move!\n(%s --> %s)" % (indexname,OutputDirectory+'/'+outindexname)
                         pass
                     
                     filename   = Source+'_scan_{0}_{1}_window{2}_feed{3}_pol{4}.fits'.\
@@ -346,5 +330,4 @@ def doPipeline(SessionNumber=1,StartScan = 11, EndScan=58,
                         os.rename(filename,OutputDirectory+'/'+outputfile)
                         os.chown(OutputDirectory+'/'+outputfile,0774)
                     except:
-			print "We can not move, we cannot move!\n(%s --> %s)" % (filename,OutputDirectory+'/'+outputfile)
                         pass
