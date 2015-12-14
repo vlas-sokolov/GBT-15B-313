@@ -306,7 +306,7 @@ def doPipeline(SessionNumber=1,StartScan = 11, EndScan=58,
 
     for bank in BankNames:
         # Loop over each feed and polarization
-        # we check if a pipeline call is necessary. 
+        # we check if a pipeline call is necessary.
         for feed in ['0','1','2','3','4','5','6']:
             for pol in ['0','1']:
                 FilesIntact = True
@@ -335,6 +335,7 @@ def doPipeline(SessionNumber=1,StartScan = 11, EndScan=58,
                     try:
                         os.rename(indexname,OutputDirectory+'/'+outindexname)
                     except:
+			print "We can not move, we cannot move!\n(%s --> %s)" % (indexname,OutputDirectory+'/'+outindexname)
                         pass
                     
                     filename   = Source+'_scan_{0}_{1}_window{2}_feed{3}_pol{4}.fits'.\
@@ -345,4 +346,5 @@ def doPipeline(SessionNumber=1,StartScan = 11, EndScan=58,
                         os.rename(filename,OutputDirectory+'/'+outputfile)
                         os.chown(OutputDirectory+'/'+outputfile,0774)
                     except:
+			print "We can not move, we cannot move!\n(%s --> %s)" % (filename,OutputDirectory+'/'+outputfile)
                         pass

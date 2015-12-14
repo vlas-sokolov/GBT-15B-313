@@ -11,7 +11,8 @@
 # - do imaging only on clouds  A, J, and J:
 #   $ python reduce.py --source J A B
 #
-from cloud_keys import keys
+from cloud_keys import keys, WindowDict
+from basemask import basebox, chanmin, chanmax
 
 data_dir='/lustre/pipeline/scratch/vsokolov/GBT-15B-313/'
 
@@ -54,7 +55,9 @@ def map_cloud(cloud, do_sdfits=False, do_calibration=False, do_imaging=True, key
 	nblocks = keys[cloud]['nblocks']
 	scans   = keys[cloud]['scans'  ] 
 	gains   = keys[cloud]['gains'  ] 
-	windows = ['2','3'] # Only NHc(1,1) to test the system
+	#windows = ['4','5'] # NH(2,2) to test the system
+	#windows = ['2','3'] # Only NHc(1,1) to test the system
+	windows = ['0','1','6','7','8','9','10','11','12','13'] # everything but NH3 (1,1) and (2,2)
 
 	# Convert VEGAS raw data to sdfits
 	if do_sdfits:
@@ -91,15 +94,21 @@ def map_cloud(cloud, do_sdfits=False, do_calibration=False, do_imaging=True, key
 	
 	# Image the calibrated data
 	if do_imaging:
-		startChannel, endChannel = 3200, 5000
+		# TODO: trim and implement proper vlsr corrections
+		# cloud I had a somewhat mismatched vlsr
+		startChannel, endChannel = (2800, 4600) if cloud is 'I' else (3200, 5000)
+			
 		file_extension='_test'
-		GAS_gridregion.griddata(rootdir=data_dir, 
-		                        region=region, 
-		                        dirname=region+'_NH3_11', 
-		                        startChannel = startChannel, 
-		                        endChannel = endChannel, 
-		                        #baselineRegion = [TODO],
-		                        file_extension=file_extension)
+		for window in windows:
+			line = WindowDict[window]
+			GAS_gridregion.griddata(rootdir=data_dir, 
+			                        region=region, 
+			                        dirname=region+'_'+line, 
+			                        startChannel = startChannel, 
+			                        endChannel = endChannel, 
+			                        doBaseline = True,
+						baselineRegion = basebox(cloud, line)+startChannel
+			                        file_extension=file_extension)
 
 if __name__ == "__main__":
 	main()
