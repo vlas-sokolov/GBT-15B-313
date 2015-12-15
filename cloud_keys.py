@@ -17,12 +17,12 @@ WindowDict = {'0':'NH3_44',
               '5':'NH3_22',
               '6':'NH3_33',
               '7':'NH3_33',
-              '8':'NH3_55',
-              '9':'NH3_55',
+              '8':'HC5N',
+              '9':'HC5N',
               '10':'HC7N',
               '11':'HC7N',
-              '12':'HC5N',
-              '13':'HC5N'}
+              '12':'NH3_55',
+              '13':'NH3_55'}
 
 # TODO: convert into a text table format to be read with scipy or pandas
 

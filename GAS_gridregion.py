@@ -112,18 +112,17 @@ def griddata(pixPerBeam = 3.0,
              templateHeader = None,
              gridFunction = jincGrid, 
              rootdir = '/lustre/pipeline/scratch/vsokolov/',
-             region = 'map_cloudA',
-             dirname = 'map_cloudA_NH3_11',
-             startChannel = 1024, endChannel = 3072,
-             doBaseline = True,
-             baselineRegion = [slice(512,1024,1),slice(3072,3584,1)],
-             file_extension = None):
-    filelist = glob.glob(rootdir+'/'+region+'/'+dirname+'/*fits')
-    if not file_extension:
-        file_extension='_all'
+             region = 'cloud',
+             indir = 'map_NH3_11',
+	     outfile = 'map',
+             startChannel = 3200, endChannel = 5000,
+             doBaseline = False,
+             baselineRegion = None,
+             file_extension = ''):
+    filelist = glob.glob(rootdir+'/'+region+'/'+indir+'/*fits')
     history_message='Gridding of data using all sessions'
     if len(filelist) == 0:
-        warnings.warn('There are no FITS files to process in '+rootdir+'/'+region+'/'+dirname)
+        warnings.warn('There are no FITS files to process in '+rootdir+'/'+region+'/'+indir)
         return
     #pull a test structure
     s = fits.getdata(filelist[0])
@@ -230,7 +229,7 @@ def griddata(pixPerBeam = 3.0,
         hdr = addHeader_nonStd( hdr, beamSize, Data_Unit)
         #
         hdu = fits.PrimaryHDU(outCubeTemp,header=hdr)
-        hdu.writeto(dirname+file_extension+'.fits',clobber=True)
+        hdu.writeto(rootdir+region+'/'+outfile+file_extension+'.fits',clobber=True)
 
     outWts.shape = (1,)+outWts.shape
     outCube /= outWts
@@ -243,12 +242,12 @@ def griddata(pixPerBeam = 3.0,
     hdr.add_history(history_message)
     #
     hdu = fits.PrimaryHDU(outCube,header=hdr)
-    hdu.writeto(dirname+file_extension+'.fits',clobber=True)
+    hdu.writeto(rootdir+region+'/'+outfile+file_extension+'.fits',clobber=True)
 
     w2 = w.dropaxis(2)
     hdr2 = fits.Header(w2.to_header())
     hdu2 = fits.PrimaryHDU(outWts,header=hdr2)
-    hdu2.writeto(dirname+file_extension+'_wts.fits',clobber=True)
+    hdu2.writeto(rootdir+region+'/'+outfile+file_extension+'_wts.fits',clobber=True)
 
 def doPipeline(SessionNumber=1,StartScan = 11, EndScan=58, 
                Source='EG28.67', Window='0', 

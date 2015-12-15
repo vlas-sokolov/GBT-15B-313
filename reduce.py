@@ -2,19 +2,17 @@
 #
 # A master script for reducing GBT data. Intended to be run 
 # from command line, but importing the file would load the
-# "map_cloud" routine, which could be used directly. If an
-# execfile is called it, some sensible defaults are assumed.
+# "map_cloud" routine, which could be used directly. If
+# called byexecfile, some sensible defaults are assumed.
 #
 # Example uses:
 # - recalibrate cloud A data:
-#   $ ./reduce.py --calib --source A
+#   $ ./reduce.py --calib --sources A
 # - do imaging only on clouds  A, J, and J:
-#   $ python reduce.py --source J A B
+#   $ python reduce.py --sources J A B
 #
 from cloud_keys import keys, WindowDict
 from basemask import basebox, chanmin, chanmax
-
-data_dir='/lustre/pipeline/scratch/vsokolov/GBT-15B-313/'
 
 def main():
 	# Setting up the command line interaction
@@ -30,19 +28,19 @@ def main():
 	parser.add_argument('--noimage', dest='no_imaging', 
 			    action='store_true', default=False, 
 			    help='do not grid data into images')
-	parser.add_argument('--source', action='store', nargs='+',
+	parser.add_argument('--sources', action='store', nargs='+',
 	                   help='source(s) for the pipeline to process')
 	
 	args = parser.parse_args()
 	# so this is a bit ugly, but it still allows to
 	# exectute the main() block through execfile(reduce.py)
-	if args.source is None:
+	if args.sources is None:
 		print parser.format_usage()
 		print 'assuming sources A, B, E, I, J'
-		print 'consider passing --source X Y Z',
+		print 'consider passing --sources X Y Z',
 		print 'from the command line'
-		args.source = ['A','B','E','I','J']
-	for cloud in args.source:
+		args.sources = ['A','B','E','I','J']
+	for cloud in args.sources:
 		map_cloud(cloud=cloud, do_calibration=args.do_calibration,
 		          do_sdfits=args.do_sdfits, 
 		          do_imaging=not args.no_imaging)
@@ -58,6 +56,13 @@ def map_cloud(cloud, do_sdfits=False, do_calibration=False, do_imaging=True, key
 	#windows = ['4','5'] # NH(2,2) to test the system
 	#windows = ['2','3'] # Only NHc(1,1) to test the system
 	windows = ['0','1','6','7','8','9','10','11','12','13'] # everything but NH3 (1,1) and (2,2)
+	windows = ['10','11','12','13'] # finish the test
+	# pulls all unique values from a dictionary of {'ifnum':'lineName', ...} form:
+	lines = [] 
+	_ = [(WindowDict[ifn],lines.append(WindowDict[ifn])) 
+		for ifn in WindowDict if WindowDict[ifn] not in lines]
+	# NOTE: "lines" list controls the imaging loop, 
+	#	while "windows" list controls calibration!
 
 	# Convert VEGAS raw data to sdfits
 	if do_sdfits:
@@ -95,20 +100,22 @@ def map_cloud(cloud, do_sdfits=False, do_calibration=False, do_imaging=True, key
 	# Image the calibrated data
 	if do_imaging:
 		# TODO: trim and implement proper vlsr corrections
-		# cloud I had a somewhat mismatched vlsr
-		startChannel, endChannel = (2800, 4600) if cloud is 'I' else (3200, 5000)
-			
-		file_extension='_test'
-		for window in windows:
-			line = WindowDict[window]
+		# cloud 'I' had a somewhat mismatched vlsr
+		startChannel, endChannel = (2800, 4600) \
+			if cloud is 'I' else (3200, 5000)
+		lines = ['NH3_55','HC5N']	
+		for line in lines:
 			GAS_gridregion.griddata(rootdir=data_dir, 
 			                        region=region, 
-			                        dirname=region+'_'+line, 
+			                        indir=region+'_'+line, 
+			                        outfile=region+'_'+line, 
 			                        startChannel = startChannel, 
 			                        endChannel = endChannel, 
 			                        doBaseline = True,
-						baselineRegion = basebox(cloud, line)+startChannel
-			                        file_extension=file_extension)
+						baselineRegion = 
+							basebox(cloud, line)+
+							startChannel,
+						file_extension='')
 
 if __name__ == "__main__":
 	main()
