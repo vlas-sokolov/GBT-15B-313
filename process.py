@@ -7,16 +7,17 @@
 # defaults will be assumed.
 #
 # Available arguments:
-# --firstlook: adapted from GAS first_look routine,
+# --firstlook: adapted from GAS* first_look routine,
 #              does baseline fitting, rms estimates,
 #              and performs moment analysis
 # --cubefit  : fits ammonia, and, potentially, other 
-#              line profiles to the spectral cubes
-#                            (TODO)
+#              line profiles to the spectral cubes;
+#              Adapted from PropertyMaps.py @ GAS*.
+# *GBT Ammonia Survey (https://github.com/GBTAmmoniaSurvey/GAS)
 #
 # Example uses:
-#   $ ./process.py --firstlook --sources A --lines HC5N
-#   $ python process.py --cubefit --sources B C --lines NH3_11 NH3_22
+# $ ./process.py --firstlook --sources A --lines HC5N
+# $ python process.py --cubefit --sources B C --lines NH3_11 NH3_22
 #
 import first_look
 import numpy as np
@@ -71,10 +72,9 @@ def main():
 	elif args.cubefit:
 		for cloud in args.sources:
 			for line in args.lines:
-				raise Warning("Under construction.")
+				fitcube(cloud)
 	else:
 		raise Warning("At least one of --firstlook and --cubefit arguments is required.")
-
 
 def firstlook(cloud, line='NH3_11'):
 	print('Now %s' % line)
@@ -99,6 +99,16 @@ def firstlook(cloud, line='NH3_11'):
 	                             index_clean=index_rms, polyorder=1)
 	first_look.peak_rms(file_new, index_rms=index_rms, 
 			    index_peak=index_peak)
+
+def fitcube(cloud='I', lines=['NH3_11', 'NH3_22', 'NH3_33'], blorder=1, do_plot=True, 
+	    			snr_min=3, multicore=1, vmax=38, vmin=44):
+	for line in lines:
+		if not 'NH3_' in line:
+			raise Warning("Lines other than ammonia aren't implemented yet.")
+	import PropertyMaps # throws an error; TODO: try it with your pyspectkit version
+	PropertyMaps.cubefit('cloud'+cloud,blorder,vmin,vmax,do_plot,snr_min,multicore)
+	
+	raise Warning("Under construction.")
 
 if __name__ == "__main__":
 	main()
