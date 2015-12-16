@@ -640,7 +640,7 @@ def cubefit(region='NGC1333', blorder=1, vmin=5, vmax=15, do_plot=False,
     cube11 = pyspeckit.Cube(OneOneFile,maskmap=planemask)
     cube22 = pyspeckit.Cube(TwoTwoFile,maskmap=planemask)
     cube33 = pyspeckit.Cube(ThreeThreeFile,maskmap=planemask)
-    #cubes = pyspeckit.CubeStack([cube11,cube22,cube33],maskmap=planemask)
+    cubes = pyspeckit.CubeStack([cube11,cube22,cube33],maskmap=planemask)
     cubes = pyspeckit.CubeStack([cube11,cube22],maskmap=planemask)
     guesses = np.zeros((6,)+cubes.cube.shape[1:])
     moment1[moment1<vmin] = vmin+0.2
@@ -661,10 +661,6 @@ def cubefit(region='NGC1333', blorder=1, vmin=5, vmax=15, do_plot=False,
     cubes.fiteach(fittype='ammonia',  guesses=guesses,
                   integral=False, verbose_level=3, 
                   fixed=[F,F,F,F,F,T], signal_cut=2,
-                  limitedmax=[F,F,F,F,T,T],
-                  maxpars=[0,0,0,0,vmax,1],
-                  limitedmin=[T,T,T,T,T,T],
-                  minpars=[5,2.8,12.0,0.04,vmin,0],
                   start_from_point=(xmax,ymax),
                   use_neighbor_as_guess=True, 
                   position_order = 1/peaksnr,
