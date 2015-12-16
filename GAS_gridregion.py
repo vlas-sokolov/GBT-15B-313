@@ -118,6 +118,7 @@ def griddata(pixPerBeam = 3.0,
              startChannel = 3200, endChannel = 5000,
              doBaseline = False,
              baselineRegion = None,
+	     useBeam = None,
              file_extension = ''):
     filelist = glob.glob(rootdir+'/'+region+'/'+indir+'/*fits')
     history_message='Gridding of data using all sessions'
@@ -131,7 +132,10 @@ def griddata(pixPerBeam = 3.0,
     nu0 = s[0]['RESTFREQ']
     
     Data_Unit = s[0]['TUNIT7']
-    beamSize = 1.22 * (c/nu0/100.0)*180/np.pi # in degrees
+    if useBeam:
+	beamSize = useBeam
+    else:
+	beamSize = 1.22 * (c/nu0/100.0)*180/np.pi # in degrees
 
     naxis3 = len(s[0]['DATA'][startChannel:endChannel])
     nuindex = np.arange(len(s[0]['DATA']))

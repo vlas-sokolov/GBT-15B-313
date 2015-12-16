@@ -53,6 +53,7 @@ def map_cloud(cloud, do_sdfits=False, do_calibration=False, do_imaging=True, key
 	nblocks = keys[cloud]['nblocks']
 	scans   = keys[cloud]['scans'  ] 
 	gains   = keys[cloud]['gains'  ] 
+	beam    = keys[cloud]['beam'   ] 
 	#windows = ['4','5'] # NH(2,2) to test the system
 	#windows = ['2','3'] # Only NHc(1,1) to test the system
 	windows = ['0','1','6','7','8','9','10','11','12','13'] # everything but NH3 (1,1) and (2,2)
@@ -103,7 +104,6 @@ def map_cloud(cloud, do_sdfits=False, do_calibration=False, do_imaging=True, key
 		# cloud 'I' had a somewhat mismatched vlsr
 		startChannel, endChannel = (2800, 4600) \
 			if cloud is 'I' else (3200, 5000)
-		lines = ['NH3_55','HC5N']	
 		for line in lines:
 			GAS_gridregion.griddata(rootdir=data_dir, 
 			                        region=region, 
@@ -115,6 +115,7 @@ def map_cloud(cloud, do_sdfits=False, do_calibration=False, do_imaging=True, key
 						baselineRegion = 
 							basebox(cloud, line)+
 							startChannel,
+						useBeam = beam,
 						file_extension='')
 
 if __name__ == "__main__":

@@ -36,7 +36,8 @@ keys['A'] = {
 	'nblocks': 2,
 	'scans'  : [{'start':70, 'end':81},
 		    {'start':84, 'end':86} ],
-	'gains'  : gains_unity
+	'gains'  : gains_unity,
+	'beam'   : None
 	}
 
 keys['B'] = {
@@ -46,7 +47,8 @@ keys['B'] = {
 	'windows': ['0','1','2','3','4','5','6'],
 	'nblocks': 1,
 	'scans'  : [{'start':49, 'end':60}],
-	'gains'  : gains_unity
+	'gains'  : gains_unity,
+	'beam'   : None
 	}
 
 keys['E'] = {
@@ -56,7 +58,8 @@ keys['E'] = {
 	'windows': ['0','1','2','3','4','5','6'],
 	'nblocks': 1,
 	'scans'  : [{'start':87, 'end':98}],
-	'gains'  : gains_unity
+	'gains'  : gains_unity,
+	'beam'   : None
 	}
 
 keys['I'] = {
@@ -67,7 +70,8 @@ keys['I'] = {
 	'nblocks': 2,
 	'scans'  : [{'start':20, 'end':31},
 		    {'start':45, 'end':48} ],
-	'gains'  : gains_unity
+	'gains'  : gains_unity,
+	'beam'   : 0.008844151746708757
 	}
 
 keys['J'] = {
@@ -77,5 +81,6 @@ keys['J'] = {
 	'windows': ['0','1','2','3','4','5','6'],
 	'nblocks': 1,
 	'scans'  : [{'start':105, 'end':112}],
-	'gains'  : gains_unity
+	'gains'  : gains_unity,
+	'beam'   : None
 	}
