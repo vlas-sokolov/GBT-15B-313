@@ -155,18 +155,10 @@ def fitcube(cloud='I', lines=['NH3_11', 'NH3_22', 'NH3_33','NH3_44','NH3_55'], b
 
 		# taken from PropertyMaps.py
 		fitcubefile = fits.PrimaryHDU(data=np.concatenate([cubes.parcube,cubes.errcube]), header=cubes.header)
-		fitcubefile.header.update('PLANE1','TKIN')
-		fitcubefile.header.update('PLANE2','TEX')
-		fitcubefile.header.update('PLANE3','COLUMN')
-		fitcubefile.header.update('PLANE4','SIGMA')
-		fitcubefile.header.update('PLANE5','VELOCITY')
-		fitcubefile.header.update('PLANE6','FORTHO')
-		fitcubefile.header.update('PLANE7','eTKIN')
-		fitcubefile.header.update('PLANE8','eTEX')
-		fitcubefile.header.update('PLANE9','eCOLUMN')
-		fitcubefile.header.update('PLANE10','eSIGMA')
-		fitcubefile.header.update('PLANE11','eVELOCITY')
-		fitcubefile.header.update('PLANE12','eFORTHO')
+                for h1,h2 in zip(['1','2','3','4','5','6','7','8','9','10','11','12'],
+                                 ['TKIN','TEX','COLUMN','SIGMA','VELOCITY','FORTHO',
+                                  'eTKIN','eTEX','eCOLUMN','eSIGMA','eVELOCITY','eFORTHO']):
+                        fitcubefile.header.update(h1,h2)
 		fitcubefile.header.update('CDELT3',1)
 		fitcubefile.header.update('CTYPE3','FITPAR')
 		fitcubefile.header.update('CRVAL3',0)
