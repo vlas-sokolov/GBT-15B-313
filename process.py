@@ -100,7 +100,7 @@ def firstlook(cloud, line='NH3_11'):
 	first_look.peak_rms(file_new, index_rms=index_rms, 
 			    index_peak=index_peak)
 
-def fitcube(cloud='I', lines=['NH3_11', 'NH3_22', 'NH3_33','NH3_44','NH3_55'], blorder=1, do_plot=True, snr_min=3, multicore=12, vmin=38, vmax=44):
+def fitcube(cloud='I', lines=['NH3_11', 'NH3_22', 'NH3_33','NH3_44','NH3_55'], blorder=1, do_plot=True, snr_min=6.5, multicore=12, vmin=38, vmax=44):
 #def fitcube(cloud='I', lines=['NH3_11', 'NH3_22'], blorder=1, do_plot=True, snr_min=3, multicore=1, vmin=38, vmax=44):
 	import pyspeckit
 	for line in lines:
@@ -137,7 +137,7 @@ def fitcube(cloud='I', lines=['NH3_11', 'NH3_22', 'NH3_33','NH3_44','NH3_55'], b
 			      integral=False,
 			      verbose_level=3,
 			      fixed=[F,F,F,F,F,T],
-			      signal_cut=6.5,
+			      signal_cut=snr_min,
 			      limitedmax=[T,T,T,T,T,T],
 			      limitedmin=[T,T,T,T,T,T],
 			      maxpars=[30,7,20,5,vmax,0.5],
