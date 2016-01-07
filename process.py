@@ -105,68 +105,62 @@ def fitcube(cloud='I', lines=['NH3_11', 'NH3_22', 'NH3_33','NH3_44','NH3_55'], b
 	for line in lines:
 		if not 'NH3_' in line:
 			raise Warning("Lines other than ammonia aren't implemented yet.")
+	fitsdir = 'cloud'+cloud+'/'
+	nh3files = []
+	for line in lines:
+		nh3files.append(fitsdir+'cloud%s_%s_base%s.fits' % 
+						(cloud, line, blorder))
+	
+	# taken from PropertyMaps.py
+	from spectral_cube import SpectralCube
+	from astropy.io import fits
+	errmap11 = fits.getdata('cloudI/cloudI_NH3_11_base1_rms.fits')
+	cube11sc = SpectralCube.read(nh3files[0])
+	snr = cube11sc.filled_data[:].value/errmap11
+	peaksnr = np.max(snr,axis=0)
+	rms = np.nanmedian(errmap11)
+	planemask = (peaksnr>snr_min)
 	try:
-		# TODO: implement "lines" argument
-		import i_want_this_to_fail_for_now
-		import PropertyMaps # throws an error; TODO: try it with your pyspectkit version
-		PropertyMaps.cubefit('cloud'+cloud,blorder,vmin,vmax,do_plot,snr_min,multicore)
-	except ImportError: # if we're out of GAS
-		fitsdir = 'cloud'+cloud+'/'
-		nh3files = []
-		for line in lines:
-			nh3files.append(fitsdir+'cloud%s_%s_base%s.fits' % 
-							(cloud, line, blorder))
-		
-		# taken from PropertyMaps.py
-		from spectral_cube import SpectralCube
-		from astropy.io import fits
-		errmap11 = fits.getdata('cloudI/cloudI_NH3_11_base1_rms.fits')
-		cube11sc = SpectralCube.read(nh3files[0])
-		snr = cube11sc.filled_data[:].value/errmap11
-		peaksnr = np.max(snr,axis=0)
-		rms = np.nanmedian(errmap11)
-		planemask = (peaksnr>snr_min)
-		try:
-			guesses=fits.getdata('Ipars.fits')[:6,:,:]
-		except:
-			print "Can't read par.maps fits file!"
-			guesses=[15,3,15,0.2,40,0.5]
-		cubelst = []
-		for f in nh3files: cubelst.append(pyspeckit.Cube(f,maskmap=planemask))
-		cubes=pyspeckit.CubeStack(cubelst)
-		T,F = True,False
-		cubes.fiteach(fittype='ammonia',
-			      guesses=guesses,
-			      integral=False,
-			      verbose_level=3,
-			      fixed=[F,F,F,F,F,T],
-			      signal_cut=snr_min,
-			      limitedmax=[T,T,T,T,T,T],
-			      limitedmin=[T,T,T,T,T,T],
-			      maxpars=[30,7,20,5,vmax,1],
-			      minpars=[0,0,0,0,vmin,0],
-			      start_from_point=(21,21), # redudndant with position_order
-			      use_neighbor_as_guess=True,
-			      position_order= 1/peaksnr,
-			      errmap=errmap11,
-			      multicore=multicore)
+		guesses=fits.getdata('Ipars.fits')[:6,:,:]
+	except:
+		print "Can't read par.maps fits file!"
+		guesses=[15,3,15,0.2,40,0.5]
+	cubelst = []
+	for f in nh3files: cubelst.append(pyspeckit.Cube(f,maskmap=planemask))
+	cubes=pyspeckit.CubeStack(cubelst)
+	T,F = True,False
+	cubes.fiteach(fittype='ammonia',
+		      guesses=guesses,
+		      integral=False,
+		      verbose_level=3,
+		      fixed=[F,F,F,F,F,T],
+		      signal_cut=snr_min,
+		      limitedmax=[T,T,T,T,T,T],
+		      limitedmin=[T,T,T,T,T,T],
+		      maxpars=[30,7,20,5,vmax,1],
+		      minpars=[0,0,0,0,vmin,0],
+		      start_from_point=(21,21), # redudndant with position_order
+		      use_neighbor_as_guess=True,
+		      position_order= 1/peaksnr,
+		      errmap=errmap11,
+		      multicore=multicore)
 
-		# taken from PropertyMaps.py
-		fitcubefile = fits.PrimaryHDU(data=np.concatenate([cubes.parcube,cubes.errcube]), header=cubes.header)
-                for h1,h2 in zip(['1','2','3','4','5','6','7','8','9','10','11','12'],
-                                 ['TKIN','TEX','COLUMN','SIGMA','VELOCITY','FORTHO',
-                                  'eTKIN','eTEX','eCOLUMN','eSIGMA','eVELOCITY','eFORTHO']):
-                        fitcubefile.header.update(h1,h2)
-		fitcubefile.header.update('CDELT3',1)
-		fitcubefile.header.update('CTYPE3','FITPAR')
-		fitcubefile.header.update('CRVAL3',0)
-		fitcubefile.header.update('CRPIX3',1)
-		fitcubefile.writeto("cloud{0}_parameter_maps.fits".format(cloud),clobber=True)
+	# taken from PropertyMaps.py
+	fitcubefile = fits.PrimaryHDU(data=np.concatenate([cubes.parcube,cubes.errcube]), header=cubes.header)
+        for h1,h2 in zip(['1','2','3','4','5','6','7','8','9','10','11','12'],
+                         ['TKIN','TEX','COLUMN','SIGMA','VELOCITY','FORTHO',
+                          'eTKIN','eTEX','eCOLUMN','eSIGMA','eVELOCITY','eFORTHO']):
+                fitcubefile.header.update(h1,h2)
+	fitcubefile.header.update('CDELT3',1)
+	fitcubefile.header.update('CTYPE3','FITPAR')
+	fitcubefile.header.update('CRVAL3',0)
+	fitcubefile.header.update('CRPIX3',1)
+	fitcubefile.writeto("cloud{0}_parameter_maps.fits".format(cloud),clobber=True)
 
-		if do_plot:
-			cubes.mapplot()
-			#cubes.mapplot.plane = cubes.parcube[0,:,:]
-			#cubes.mapplot(estimator=None)
+	if do_plot:
+		cubes.mapplot()
+		#cubes.mapplot.plane = cubes.parcube[0,:,:]
+		#cubes.mapplot(estimator=None)
 
 if __name__ == "__main__":
 	main()
