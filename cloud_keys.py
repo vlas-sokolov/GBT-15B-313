@@ -8,6 +8,8 @@
 # a small global correction to get the amplitude calibration right.
 gains_unity = '1,1,1,1,1,1,1,1,1,1,1,1,1,1'
 gains_GAS   = '0.883,0.858,0.885,0.847,0.847,0.855,0.746,0.731,0.986,0.768,0.647,0.522,0.894,1.109'
+# selecting all the windows by default
+windows     = [str(i) for i in range(14)]
 
 WindowDict = {'0':'NH3_44',
     	      '1':'NH3_44',
@@ -25,6 +27,8 @@ WindowDict = {'0':'NH3_44',
               '13':'NH3_55'}
 
 # TODO: convert into a text table format to be read with scipy or pandas
+# TODO: move 'session' keyword down inside 'nblocks' structure to allow
+#       for sessions split over different observing blocks
 
 keys = {'A':{}, 'B':{}, 'C':{}, 'I':{}, 'J':{}}
 
@@ -32,7 +36,7 @@ keys['A'] = {
 	'session': 03,
 	'source' : 'AG18.82',
 	'region' : 'cloudA',
-	'windows': ['0','1','2','3','4','5','6'],
+	'windows': windows,
 	'nblocks': 2,
 	'scans'  : [{'start':70, 'end':81},
 		    {'start':84, 'end':86} ],
@@ -44,7 +48,7 @@ keys['B'] = {
 	'session': 03,
 	'source' : 'BG19.27',
 	'region' : 'cloudB',
-	'windows': ['0','1','2','3','4','5','6'],
+	'windows': windows,
 	'nblocks': 1,
 	'scans'  : [{'start':49, 'end':60}],
 	'gains'  : gains_unity,
@@ -55,7 +59,7 @@ keys['E'] = {
 	'session': 04,
 	'source' : 'EG28.67',
 	'region' : 'cloudE',
-	'windows': ['0','1','2','3','4','5','6'],
+	'windows': windows,
 	'nblocks': 1,
 	'scans'  : [{'start':87, 'end':98}],
 	'gains'  : gains_unity,
@@ -66,7 +70,7 @@ keys['I'] = {
 	'session': 02,
 	'source' : 'IG38.35',
 	'region' : 'cloudI',
-	'windows': ['0','1','2','3','4','5','6'],
+	'windows': windows,
 	'nblocks': 2,
 	'scans'  : [{'start':20, 'end':31},
 		    {'start':45, 'end':48} ],
@@ -78,7 +82,7 @@ keys['J'] = {
 	'session': 04,
 	'source' : 'JG53.11',
 	'region' : 'cloudJ',
-	'windows': ['0','1','2','3','4','5','6'],
+	'windows': windows,
 	'nblocks': 1,
 	'scans'  : [{'start':105, 'end':112}],
 	'gains'  : gains_unity,

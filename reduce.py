@@ -54,16 +54,15 @@ def map_cloud(cloud, do_sdfits=False, do_calibration=False, do_imaging=True, key
 	scans   = keys[cloud]['scans'  ] 
 	gains   = keys[cloud]['gains'  ] 
 	beam    = keys[cloud]['beam'   ] 
-	#windows = ['4','5'] # NH(2,2) to test the system
-	#windows = ['2','3'] # Only NHc(1,1) to test the system
-	windows = ['0','1','6','7','8','9','10','11','12','13'] # everything but NH3 (1,1) and (2,2)
-	windows = ['10','11','12','13'] # finish the test
+
+	# TODO: make --windows (or better yet, --lines) an cmd argument
 	# pulls all unique values from a dictionary of {'ifnum':'lineName', ...} form:
 	lines = [] 
 	_ = [(WindowDict[ifn],lines.append(WindowDict[ifn])) 
 		for ifn in WindowDict if WindowDict[ifn] not in lines]
 	# NOTE: "lines" list controls the imaging loop, 
 	#	while "windows" list controls calibration!
+	# TODO: resolve lines/windows ambiguity!
 
 	# Convert VEGAS raw data to sdfits
 	if do_sdfits:
