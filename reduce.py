@@ -46,7 +46,6 @@ def main():
 		          do_imaging=not args.no_imaging)
 
 def map_cloud(cloud, do_sdfits=False, do_calibration=False, do_imaging=True, keys=keys):
-	session = keys[cloud]['session'] 
 	source  = keys[cloud]['source' ] 
 	region  = keys[cloud]['region' ] 
 	windows = keys[cloud]['windows'] 
@@ -68,13 +67,19 @@ def map_cloud(cloud, do_sdfits=False, do_calibration=False, do_imaging=True, key
 	if do_sdfits:
 		import subprocess
 		assert type(scans) is list # better safe than sorry
-		scan_blocks = ','.join(['%i:%i'%(s['start'],s['end']) 
-				       for s in scans])
-		sdfits_dir = ' AGBT15B_313_%.2i' % session
-		sdfits_args = ' -scans=\"%s\"' % scan_blocks
-		# TODO: oops I also need to properly set the output dir!
-		subprocess.Popen('sdfits-test -backends=vegasi'+
-				 sdfits_args+sdfits_dir)
+		unique_sessions = set([s['session'] for s in scans])
+		for session in unique_sessions:
+			# all scan blocks within one session are 
+			# parsed in a "s1:s2,s3:s4,..." format and
+			# then sent to sdfits-test for data-crunching
+			scan_blocks = ','.join(['%i:%i'%(s['start'],s['end']) 
+					       for s in scans] 
+					       if s['session'] is session)
+			sdfits_dir = ' AGBT15B_313_%.2i' % session
+			sdfits_args = ' -scans=\"%s\"' % scan_blocks
+			# TODO: oops I also need to properly set the output dir!
+			subprocess.Popen('sdfits-test -backends=vegasi'+
+					 sdfits_args+sdfits_dir)
 
 	# it's being quite slow on the import, moved inside the script	
 	import GAS_gridregion
@@ -84,10 +89,10 @@ def map_cloud(cloud, do_sdfits=False, do_calibration=False, do_imaging=True, key
 		for window in windows:
 			# TODO: this is way too slow; gbtpipeline can accept
 			# arguments like -m "50:60,80:90", rewrite the 
-			# wrapper to accept faster arguments
+			# GAS wrapper to accept faster arguments
 			for block in range(nblocks):	
 				GAS_gridregion.doPipeline(
-				   SessionNumber = session,
+				   SessionNumber = scans[block]['session'],
 			 	   StartScan     = scans[block]['start'],
 				   EndScan       = scans[block]['end'  ], 
 				   Source        = source,

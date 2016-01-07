@@ -27,64 +27,57 @@ WindowDict = {'0':'NH3_44',
               '13':'NH3_55'}
 
 # TODO: convert into a text table format to be read with scipy or pandas
-# TODO: move 'session' keyword down inside 'nblocks' structure to allow
-#       for sessions split over different observing blocks
 
 keys = {'A':{}, 'B':{}, 'C':{}, 'I':{}, 'J':{}}
 
 keys['A'] = {
-	'session': 03,
 	'source' : 'AG18.82',
 	'region' : 'cloudA',
 	'windows': windows,
 	'nblocks': 2,
-	'scans'  : [{'start':70, 'end':81},
-		    {'start':84, 'end':86} ],
+	'scans'  : [{'start':70, 'end':81, 'session':03},
+		    {'start':84, 'end':86, 'session':03} ],
 	'gains'  : gains_unity,
 	'beam'   : None
 	}
 
 keys['B'] = {
-	'session': 03,
 	'source' : 'BG19.27',
 	'region' : 'cloudB',
 	'windows': windows,
 	'nblocks': 1,
-	'scans'  : [{'start':49, 'end':60}],
+	'scans'  : [{'start':49, 'end':60, 'session':03}],
 	'gains'  : gains_unity,
 	'beam'   : None
 	}
 
 keys['E'] = {
-	'session': 04,
 	'source' : 'EG28.67',
 	'region' : 'cloudE',
 	'windows': windows,
 	'nblocks': 1,
-	'scans'  : [{'start':87, 'end':98}],
+	'scans'  : [{'start':87, 'end':98, 'session':04}],
 	'gains'  : gains_unity,
 	'beam'   : None
 	}
 
 keys['I'] = {
-	'session': 02,
 	'source' : 'IG38.35',
 	'region' : 'cloudI',
 	'windows': windows,
 	'nblocks': 2,
-	'scans'  : [{'start':20, 'end':31},
-		    {'start':45, 'end':48} ],
+	'scans'  : [{'start':20, 'end':31, 'session':02},
+		    {'start':45, 'end':48, 'session':02} ],
 	'gains'  : gains_unity,
 	'beam'   : 0.008844151746708757
 	}
 
 keys['J'] = {
-	'session': 04,
 	'source' : 'JG53.11',
 	'region' : 'cloudJ',
 	'windows': windows,
 	'nblocks': 1,
-	'scans'  : [{'start':105, 'end':112}],
+	'scans'  : [{'start':105, 'end':112, 'session':04}],
 	'gains'  : gains_unity,
 	'beam'   : None
 	}
