@@ -100,7 +100,7 @@ def firstlook(cloud, line='NH3_11'):
 	first_look.peak_rms(file_new, index_rms=index_rms, 
 			    index_peak=index_peak)
 
-def fitcube(cloud='I', lines=['NH3_11', 'NH3_22', 'NH3_33','NH3_44','NH3_55'], blorder=1, do_plot=True, snr_min=3, multicore=1, vmin=38, vmax=44):
+def fitcube(cloud='I', lines=['NH3_11', 'NH3_22', 'NH3_33','NH3_44','NH3_55'], blorder=1, do_plot=True, snr_min=6.5, multicore=1, vmin=38, vmax=44):
 	import pyspeckit
 	for line in lines:
 		if not 'NH3_' in line:
@@ -143,10 +143,9 @@ def fitcube(cloud='I', lines=['NH3_11', 'NH3_22', 'NH3_33','NH3_44','NH3_55'], b
 			      signal_cut=snr_min,
 			      limitedmax=[T,T,T,T,T,T],
 			      limitedmin=[T,T,T,T,T,T],
-			      maxpars=[30,7,20,5,vmax,0.5],
-			      minpars=[0,0,0,0,vmin,0.5],
-			      start_from_point=(30,22), # redudndant with position_order
-							# also gives the x,y for TEST block
+			      maxpars=[30,7,20,5,vmax,1],
+			      minpars=[0,0,0,0,vmin,0],
+			      start_from_point=(21,21), # redudndant with position_order
 			      use_neighbor_as_guess=True,
 			      position_order= 1/peaksnr,
 			      errmap=errmap11,
