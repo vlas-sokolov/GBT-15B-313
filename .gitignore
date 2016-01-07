@@ -3,8 +3,9 @@ log/
 scripts/
 cloudI
 
-# FITS files
+# data files
 *.fits
+*.p
 
 # vim .swp files
 *.swp
