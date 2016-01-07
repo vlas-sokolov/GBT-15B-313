@@ -73,8 +73,8 @@ def map_cloud(cloud, do_sdfits=False, do_calibration=False, do_imaging=True, key
 			# parsed in a "s1:s2,s3:s4,..." format and
 			# then sent to sdfits-test for data-crunching
 			scan_blocks = ','.join(['%i:%i'%(s['start'],s['end']) 
-					       for s in scans] 
-					       if s['session'] is session)
+					       for s in scans 
+					       if s['session'] is session])
 			sdfits_dir = ' AGBT15B_313_%.2i' % session
 			sdfits_args = ' -scans=\"%s\"' % scan_blocks
 			# TODO: oops I also need to properly set the output dir!

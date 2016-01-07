@@ -57,7 +57,7 @@ keys['E'] = {
 	'windows': windows,
 	'nblocks': 2,
 	'scans'  : [{'start':87, 'end':98, 'session':04}, 
-		 :  {'start':28, 'end':35, 'session':05} ],
+		    {'start':28, 'end':35, 'session':05} ],
 	'gains'  : gains_unity,
 	'beam'   : None
 	}
@@ -79,7 +79,7 @@ keys['J'] = {
 	'windows': windows,
 	'nblocks': 2,
 	'scans'  : [{'start':105, 'end':112, 'session':04},
-		 :  {'start': 41, 'end': 47, 'session':05} ],
+		    {'start': 41, 'end': 47, 'session':05} ],
 	'gains'  : gains_unity,
 	'beam'   : None
 	}
