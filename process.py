@@ -124,7 +124,7 @@ def fitcube(cloud='I', lines=['NH3_11', 'NH3_22', 'NH3_33','NH3_44','NH3_55'], b
 		guesses=fits.getdata('Ipars.fits')[:6,:,:]
 	except:
 		print "Can't read par.maps fits file!"
-		guesses=[15,3,15,0.2,40,0.5]
+		guesses=[15,4,15,0.2,40,0.5]
 	cubelst = []
 	for f in nh3files: cubelst.append(pyspeckit.Cube(f,maskmap=planemask))
 	cubes=pyspeckit.CubeStack(cubelst)
