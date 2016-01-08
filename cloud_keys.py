@@ -11,6 +11,9 @@ gains_GAS   = '0.883,0.858,0.885,0.847,0.847,0.855,0.746,0.731,0.986,0.768,0.647
 # selecting all the windows by default
 windows     = [str(i) for i in range(14)]
 
+# if set to NaN will be calculated based of RESTFRQ in the header!
+beam_NH3_11 = 0.008844151746708757 # in degrees
+
 WindowDict = {'0':'NH3_44',
     	      '1':'NH3_44',
               '2':'NH3_11',
@@ -38,7 +41,7 @@ keys['A'] = {
 	'scans'  : [{'start':70, 'end':81, 'session':03},
 		    {'start':84, 'end':86, 'session':03} ],
 	'gains'  : gains_unity,
-	'beam'   : None
+	'beam'   : beam_NH3_11
 	}
 
 keys['B'] = {
@@ -48,7 +51,7 @@ keys['B'] = {
 	'nblocks': 1,
 	'scans'  : [{'start':49, 'end':60, 'session':03}],
 	'gains'  : gains_unity,
-	'beam'   : None
+	'beam'   : beam_NH3_11
 	}
 
 keys['E'] = {
@@ -59,7 +62,7 @@ keys['E'] = {
 	'scans'  : [{'start':87, 'end':98, 'session':04}, 
 		    {'start':28, 'end':35, 'session':05} ],
 	'gains'  : gains_unity,
-	'beam'   : None
+	'beam'   : beam_NH3_11
 	}
 
 keys['I'] = {
@@ -70,7 +73,7 @@ keys['I'] = {
 	'scans'  : [{'start':20, 'end':31, 'session':02},
 		    {'start':45, 'end':48, 'session':02} ],
 	'gains'  : gains_unity,
-	'beam'   : 0.008844151746708757
+	'beam'   : beam_NH3_11
 	}
 
 keys['J'] = {
@@ -81,5 +84,5 @@ keys['J'] = {
 	'scans'  : [{'start':105, 'end':112, 'session':04},
 		    {'start': 41, 'end': 47, 'session':05} ],
 	'gains'  : gains_unity,
-	'beam'   : None
+	'beam'   : beam_NH3_11
 	}
