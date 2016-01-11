@@ -114,7 +114,7 @@ def fitcube(cloud='I', lines=['NH3_11', 'NH3_22', 'NH3_33','NH3_44','NH3_55'], b
 	# taken from PropertyMaps.py
 	from spectral_cube import SpectralCube
 	from astropy.io import fits
-	errmap11 = fits.getdata('cloudI/cloudI_NH3_11_base1_rms.fits')
+	errmap11 = fits.getdata('cloud{}/cloud{}_NH3_11_base1_rms.fits'.format(cloud, cloud))
 	cube11sc = SpectralCube.read(nh3files[0])
 	snr = cube11sc.filled_data[:].value/errmap11
 	peaksnr = np.max(snr,axis=0)
