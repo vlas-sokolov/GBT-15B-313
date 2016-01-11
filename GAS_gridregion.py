@@ -265,6 +265,7 @@ def doPipeline(SessionNumber=1,StartScan = 11, EndScan=58,
     if Gains is None:
         Gains = '1,1,1,1,1,1,1,1,1,1,1,1,1,1'
     SessionDir = 'AGBT15B_313_'+str(SessionNumber).zfill(2)+'.raw.vegas/'
+    # TODO: disable emtpy banks - will make the pipeline run faster
     BankNames = ['A','B','C','D','E','F','G','H']
     print('Reducing '+SessionDir)
     from cloud_keys import WindowDict
