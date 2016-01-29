@@ -100,7 +100,7 @@ def firstlook(cloud, line='NH3_11'):
 	first_look.peak_rms(file_new, index_rms=index_rms, 
 			    index_peak=index_peak)
 
-def fitcube(cloud='I', lines=['NH3_11', 'NH3_22', 'NH3_33','NH3_44','NH3_55'], blorder=1, do_plot=True, snr_min=6.5, multicore=1, vmin=38, vmax=44):
+def fitcube(cloud='I', lines=['NH3_11', 'NH3_22', 'NH3_33'], blorder=1, do_plot=True, snr_min=6.5, multicore=1, vmin=None, vmax=None):
 	import pyspeckit
 	for line in lines:
 		if not 'NH3_' in line:
@@ -120,11 +120,14 @@ def fitcube(cloud='I', lines=['NH3_11', 'NH3_22', 'NH3_33','NH3_44','NH3_55'], b
 	peaksnr = np.max(snr,axis=0)
 	rms = np.nanmedian(errmap11)
 	planemask = (peaksnr>snr_min)
+        vlsr = keys[cloud]['vlsr']
+        if vmin is None or vmax is None:
+            vmin, vmax = vlsr-10, vlsr+10
 	try:
-		guesses=fits.getdata('Ipars.fits')[:6,:,:]
+		guesses=fits.getdata('{}pars.fits'.format(cloud))[:6,:,:]
 	except:
 		print "Can't read par.maps fits file!"
-		guesses=[15,4,15,0.2,40,0.5]
+		guesses=[15,4,15,0.2,vlsr,0.5]
 	cubelst = []
 	for f in nh3files: cubelst.append(pyspeckit.Cube(f,maskmap=planemask))
 	cubes=pyspeckit.CubeStack(cubelst)
@@ -137,8 +140,8 @@ def fitcube(cloud='I', lines=['NH3_11', 'NH3_22', 'NH3_33','NH3_44','NH3_55'], b
 		      signal_cut=snr_min,
 		      limitedmax=[T,T,T,T,T,T],
 		      limitedmin=[T,T,T,T,T,T],
-		      maxpars=[30,7,20,5,vmax,1],
-		      minpars=[0,0,0,0,vmin,0],
+		      minpars=[0 , 2.7315, 8., 0, vmin, 0.5],
+		      maxpars=[30, 15    , 20, 9, vmax, 0.5],
 		      start_from_point=(21,21), # redudndant with position_order
 		      use_neighbor_as_guess=True,
 		      position_order= 1/peaksnr,

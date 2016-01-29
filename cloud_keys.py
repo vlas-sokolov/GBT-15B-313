@@ -35,6 +35,7 @@ keys = {'A':{}, 'B':{}, 'C':{}, 'I':{}, 'J':{}}
 
 keys['A'] = {
 	'source' : 'AG18.82',
+        'vlsr'   : 65.8,
 	'region' : 'cloudA',
 	'windows': windows,
 	'nblocks': 2,
@@ -46,6 +47,7 @@ keys['A'] = {
 
 keys['B'] = {
 	'source' : 'BG19.27',
+        'vlsr'   : 26.2,
 	'region' : 'cloudB',
 	'windows': windows,
 	'nblocks': 1,
@@ -56,6 +58,7 @@ keys['B'] = {
 
 keys['E'] = {
 	'source' : 'EG28.67',
+        'vlsr'   : 79.5,
 	'region' : 'cloudE',
 	'windows': windows,
 	'nblocks': 2,
@@ -67,6 +70,7 @@ keys['E'] = {
 
 keys['I'] = {
 	'source' : 'IG38.35',
+        'vlsr'   : 41.6,
 	'region' : 'cloudI',
 	'windows': windows,
 	'nblocks': 2,
@@ -78,6 +82,7 @@ keys['I'] = {
 
 keys['J'] = {
 	'source' : 'JG53.11',
+        'vlsr'   : 22.0,
 	'region' : 'cloudJ',
 	'windows': windows,
 	'nblocks': 2,
