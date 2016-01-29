@@ -2,6 +2,8 @@
 log/
 scripts/
 cloudI
+source.cat
+figure.py
 
 # data files
 *.fits
