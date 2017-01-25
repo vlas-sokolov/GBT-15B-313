@@ -78,7 +78,7 @@ def map_cloud(cloud, do_sdfits=False, do_calibration=False, do_imaging=True, key
 			sdfits_dir = ' AGBT15B_313_%.2i' % session
 			sdfits_args = ' -scans=\"%s\"' % scan_blocks
 			# TODO: oops I also need to properly set the output dir!
-			subprocess.Popen('sdfits-test -backends=vegasi'+
+			subprocess.Popen('sdfits-test -backends=vegas'+
 					 sdfits_args+sdfits_dir)
 
 	# it's being quite slow on the import, moved inside the script	
